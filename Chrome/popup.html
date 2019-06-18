@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
     <title>Forum Alert</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
     <style>
         input[type=text]{
             width: 100%;
@@ -17,6 +17,10 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
+        body {
+            min-width: 300px;
+        }
     </style>
     
     
@@ -25,10 +29,26 @@
     
     <div class="asdf">
         <label for="inputA">Input</label>
-        <input type="text" id="inputA" name="firstname" placeholder="Your name..">
+        <input type="text" id="inputA" placeholder="Input Text">
         
         <button type="button" id="btn">Submit </button>
         <div id ="Response"> Hello World! </div>
+
+    <h3 style="font-weight:bold; text-align:center;">DOM Info</h3>
+    <table border="1" cellpadding="3" style="border-collapse:collapse;">
+      <tr>
+        <td nowrap>Total number of elements:</td>
+        <td align="right"><span id="total">N/A</span></td>
+      </tr>
+      <tr>
+        <td nowrap>Number of input elements:</td>
+        <td align="right"><span id="inputs">N/A</span></td>
+      </tr>
+      <tr>
+        <td nowrap>Number of button elements:</td>
+        <td align="right"><span id="buttons">N/A</span></td>
+      </tr>
+    </table>
     </div>
 
     

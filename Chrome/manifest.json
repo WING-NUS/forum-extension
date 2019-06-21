@@ -16,7 +16,8 @@
     },
     "content_scripts": [
         {
-          "matches": ["http://*/*", "https://*/*"],
+          "css": ["styles.css"],
+          "matches": ["https://coursemology.org/*/*/forums/*"],
           "js": ["jquery-3.4.1.min.js","contentscript.js"],
           "run_at": "document_idle",
           "all_frames": false

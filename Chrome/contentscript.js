@@ -1,44 +1,68 @@
-
-
-// // Inform the background page that 
-// // this tab should have a page-action.
-// chrome.runtime.sendMessage({
-//     from: 'content',
-//     subject: 'showPageAction',
-//   });
-  
-//   // Listen for messages from the popup.
-//   chrome.runtime.onMessage.addListener((msg, sender, response) => {
-//     // First, validate the message's structure.
-//     if ((msg.from === 'popup') && (msg.subject === 'DOMInfo')) {
-//       // Collect the necessary data. 
-//       // (For your specific requirements `document.querySelectorAll(...)`
-//       //  should be equivalent to jquery's `$(...)`.)
-
-//       var domInfo = {
-//         total: document.querySelectorAll('*').length,
-//         inputs: document.querySelectorAll('input').length,
-//         buttons: document.querySelectorAll('button').length,
-//       };
-  
-//       // Directly respond to the sender (popup), 
-//       // through the specified callback.
-//       response(domInfo);
-//     }
-//   });
-
 const url = "https://86ke5oq1na.execute-api.ap-southeast-1.amazonaws.com/default/mySimpleFunction";
 
 var data = {
   "sentence": "text one two three! asd_ asd"
 };
 
-console.log(data);
+console.log("Script injected!");
+// console.log(localStorage["counter"]);
 
 var data2 = JSON.stringify(data);
-ajaxPost();
+// var x = document.getElementsByClassName("forum");
+// console.log(x[0].innerHTML);
+// console.log(x.length);
+// console.log(x[0].childNodes[1].querySelector('a').innerHTML);    // Gets Title of Thread 0
+// if (x[0].childNodes[1].querySelector('p') !== null){    // Gets Description of thread 0 (If it exists)
+//   console.log(x[0].childNodes[1].querySelector('p').innerHTML);
+// }   
 
-function ajaxPost(){
+var y = document.getElementsByClassName('discussion_post');    //For posts in conversation screen
+console.log(y.length);
+console.log(y[0].querySelector('p').innerHTML);
+// ajaxPost();
+
+function appendOdd(element){
+     var div = document.createElement("DIV");
+     div.id = "odd";
+     var para = document.createElement("P");
+     para.innerHTML = "This Post has an ODD number of words";
+     div.appendChild(para);
+     element.appendChild(div);
+}
+
+function appendEven(element){
+     var div = document.createElement("DIV");
+     div.id = "even";
+     var para = document.createElement("P");
+     para.innerHTML = "This Post has an EVEN number of words";
+     div.appendChild(para);
+     element.appendChild(div);
+}
+
+function isEven(number){
+     if(number%2 === 0){
+          return true;
+     } else
+          return false;
+}
+
+for (var i = 0;i < y.length; i++ ){
+     data = {
+          "sentence" : y[i].querySelector('p').innerHTML
+     };
+     data2 = JSON.stringify(data);
+     ajaxPost(y[i].querySelector('p'));
+     // if (localStorage["counter"] !== 0){
+     //      localStorage["counter"] = 0;
+     // } else {
+     //      localStorage["counter"] = localStorage["counter"] + 1;
+     // }
+     // y[i].querySelector('p').appendChild(div);
+}
+
+
+
+function ajaxPost(element){
   $.ajax({
        type:"POST",
        data: data2,
@@ -46,7 +70,16 @@ function ajaxPost(){
        success: function(data,status){
             // alert(status);
             // alert("Successful Get!  " + data);
-            console.log(data);
+            console.log("Number of words:" + data);
+            console.log(typeof(data));
+            if (isEven(data)){
+               appendEven(element);
+               console.log("Is Even!");
+            } else {
+               appendOdd(element);
+               console.log("NOT IS EVEN!");
+            }
+          //   alert(message);
        },
        error: function (jqxhr,statusCode){
             alert(jqxhr.status);
@@ -62,18 +95,13 @@ function ajaxPost(){
 }
 chrome.runtime.onMessage.addListener(gotMessage);
 
-function gotMessage(message, sender, sendResponse){
-  console.log(message);
-  if (message.txt === "start"){
-    start();
-  }
+// function gotMessage(message, sender, sendResponse){
+//   console.log(message);
+//   if (message.txt === "start"){
+//     start();
+//   }
   
-}
-
-function start(){
-    alert("started");
-}
-
+// }
 
 // chrome.runtime.sendMessage({
 //     total_elements: document.querySelectorAll('*').length // or whatever you want to send

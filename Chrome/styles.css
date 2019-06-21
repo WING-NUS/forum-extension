@@ -1,0 +1,27 @@
+.breadcrumb {
+    color: black;
+    background-color: yellow;
+}
+
+#odd img{
+    position:right;
+    margin: 20px;
+}
+
+#odd {
+    background-color: lightblue;
+    width: 50%;
+    height :50%;
+}
+
+
+#even img{
+    position:right;
+    margin: 20px;
+}
+
+#even {
+    background-color: lightgoldenrodyellow;
+    width: 50%;
+    height :50%;
+}

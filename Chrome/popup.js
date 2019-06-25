@@ -76,7 +76,7 @@ function ajaxPost(){
           success: function(data,status){
                // alert(status);
                // alert("Successful Get!  " + data);
-               Console.log("Success " + data);
+               $("#Response").text(data);
           },
           error: function (jqxhr,statusCode){
                alert(jqxhr.status);
@@ -86,7 +86,7 @@ function ajaxPost(){
                     alert(err);
                } finally {
                }
-               console.log("Failure");
+               $("#Response").text("Failure");
           }
      })
 }

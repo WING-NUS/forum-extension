@@ -1,32 +1,62 @@
 const url = "https://86ke5oq1na.execute-api.ap-southeast-1.amazonaws.com/default/mySimpleFunction";
 
+
 var data = {
   "sentence": "default"
 };
 
+chrome.storage.sync.clear();
+var keyqa = "this key has many words";
+var key2 = "key2";
+var key3 = "key3";
+storeData(keyqa,122);
+// storeUserPrefs(key2,keyqa);
+// storeUserPrefs(key3,keyqa);
+for (var a = 0; a < 3 ; a ++ ){
+     // var key = "String";
+     // console.log(key);
+     // storeData(keyqa,a);
+     // chrome.storage.sync.get(key,function(result){
+     //      var dict = JSON.parse(result[key]);
+     //      console.log("value of keyqa is " + dict.val)
+     // })
+}
+
+ function storeUserPrefs(key,data) {
+     
+         testPrefs = JSON.stringify({
+             'val': data
+         });
+     var jsonfile = {};
+     jsonfile[key] = testPrefs;
+     chrome.storage.sync.set(jsonfile, function () {
+         console.log('Saved');
+     });
+ }
+
+ 
+function storeData(key,data) {
+     
+     container = JSON.stringify({
+         'val' : data
+     });
+ var jsonfile = {};
+ jsonfile[key] = container;
+ chrome.storage.sync.set(jsonfile, function () {
+ });
+}
 
 // var value = "TestValueascascas";
-// var key = "TestKey";
-// console.log("Script injected!");
+// var keyqwe = "TestKey";
+console.log("Script injected!");
 
 // console.log("attempting to retrieve storage value BEFORE");
-// chrome.storage.sync.get(['key'],function(result){
+// chrome.storage.sync.get("mykey",function(result){
 //      console.log("Value currently is " + result.key);
 //      console.log("???");
 //      if (result.key === undefined){
 //           alert("Storage area is empty");
 //      }
-// })
-
-// chrome.storage.sync.set({key: value}, function(){
-//      console.log("value is set to " + value);
-//      console.log("Successful storage");
-// });
-
-// console.log("attempting to retrieve storage value AFTER");
-// chrome.storage.sync.get(['key'],function(result){
-//      console.log("Value currently is " + result.key);
-//      console.log("asdasdaas");
 // })
 
 var data2 = JSON.stringify(data);
@@ -46,45 +76,85 @@ if (y.length === 0 ){ // if not within the conversation page
      console.log(x.length);
      // console.log(x[0].innerHTML);
      for (var i = 0;i<x[0].querySelectorAll('tr').length;i++) {
+          // console.log("Iteration: " + i);
           var x_row = x[0].querySelectorAll('tr')[i];    //Select row x
-          // console.log(x_row.innerHTML);
-          var td = document.createElement("td");
-          td.innerHTML = "I hope this works";
-          if (i === 0){
-               td.innerHTML = "Important?";
-          }
-          // x_row.appendChild(td);
-          var x_row_elements = td.querySelectorAll('td');
           if (i !== 0){
                var key = x_row.childNodes[1].querySelector('a').innerHTML;
-               console.log(key);
-               chrome.storage.sync.set({key: i}, function(){
-                    console.log("value is set to " + i);
-                    console.log("Successful storage");
-               });
+               // console.log(key);
+               storeData(key,i);
+               // retrieve(key);
+               retrieveStorage(x_row,i,key);
+          }
+         
+          var td = document.createElement("td");
+          td.innerHTML = "I hope this works " + i;
+          if (i === 0){
+               td.innerHTML = "Important?";
+               x_row.insertBefore(td,x_row.childNodes[2]);
+          } else{
+               retrieve(key);
+          }
+          // if (i !== 0){
+          //      var key = x_row.childNodes[1].querySelector('a').innerHTML;
+          //      console.log(key);
+          //      chrome.storage.sync.set({key: i}, function(){
+          //           console.log("value is set to " + i);
+          //      });
 
-               chrome.storage.sync.get(['key'],function(result){
-                    console.log("Value currently is " + result.key);
-                    console.log("asdasdaas");
-                    if (isEven(result.key)){
-                         console.log("even");
-                         td.innerHTML = "Even";
+          //      chrome.storage.sync.get(['key'],function(result){
+          //           console.log("Value currently is " + result.key);
+          //           if (isEven(result.key)){
+          //                console.log("even");
+          //                td.innerHTML = "Even " + i;
                          
-                         x_row.insertBefore(td,x_row.childNodes[2]);
-                    } else {
-                         console.log ("odd");
-                         td.innerHTML = "Odd";
+          //           } else {
+          //                console.log ("odd");
+          //                td.innerHTML = "Odd " + i;
                          
-                         x_row.insertBefore(td,x_row.childNodes[2]);
-                    }
-               })
-               
-          }    
+          //           }
+          //      })
+          
+          // x_row.insertBefore(td,x_row.childNodes[2]);     
+          // }    
      }
-
-
 }
 
+function retrieveStorage(element,i,key){
+     var td = document.createElement("td");
+     td.innerHTML = "I hope this works " + i;
+     if (i === 0){
+          td.innerHTML = "Important?";
+     }
+     chrome.storage.sync.get(key,function(result){
+          var dict = JSON.parse(result[key]);
+          console.log("value of " + key +" is " + dict.val);
+          if (isEven(dict.val)){
+               td.innerHTML = "Even " + i;
+               element.insertBefore(td,element.childNodes[2]);  
+          } else{
+               td.innerHTML = "Odd " + i;
+               element.insertBefore(td,element.childNodes[2]);
+          }
+     })
+     // chrome.storage.sync.get(['key'],function(result){
+     //      console.log("Value currently is " + result.key);
+     //      if (isEven(result.key)){
+     //      console.log("even");
+     //      td.innerHTML = "Even " + i;               
+     //      element.insertBefore(td,element.childNodes[2]);        
+     // } else {
+     //      console.log ("odd");
+     //      td.innerHTML = "Odd " + i;
+     //      element.insertBefore(td,element.childNodes[2]);
+     // }    
+     // element.insertBefore(td,element.childNodes[2]);
+}
+function retrieve(key){
+     chrome.storage.sync.get(key,function(result){
+     var dict = JSON.parse(result[key]);
+     console.log("value of keyqa is " + dict.val)
+})
+}
 for (var i = 0;i < y.length; i++ ){
      data = {
           "sentence" : y[i].querySelector('p').innerHTML

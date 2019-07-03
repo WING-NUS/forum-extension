@@ -4,7 +4,7 @@
 //       if (changeInfo.url) {
 //         alert("sending message");
 //         chrome.tabs.sendMessage( tabId, {
-//             message: 'hello!',
+//            a message: 'hello!',
 //             url: changeInfo.url
 //           });
 //         alert("sent message");

@@ -34,7 +34,7 @@ const url = "https://86ke5oq1na.execute-api.ap-southeast-1.amazonaws.com/default
 //      });
 //    });
 
-$("#Response").text("Total number of elements on this page: " + localStorage["total_elements"]);
+// $("#Response").text("Total number of elements on this page: " + localStorage["total_elements"]);
 
 $( "#btn" ).css( "border", "3px solid red" );
 
@@ -45,7 +45,7 @@ function popup() {
      var activeTab = tabs[0];
      console.log(activeTab);
      console.log(activeTab.id);
-     chrome.tabs.sendMessage(activeTab.id, {"message": "start"});
+     chrome.tabs.sendMessage(activeTab.id, {"message": "clear"});
      alert("Message sent");
     });
  }
@@ -54,19 +54,19 @@ function popup() {
    document.getElementById("btn").addEventListener("click", popup);
  });
 
-$(document).ready(function(){
-     $("#btn").click(function(){
+// $(document).ready(function(){
+//      $("#btn").click(function(){
            
-          var text = document.getElementById("inputA").value;
-          data = {
-               "sentence": text
-             };
-          data2 = JSON.stringify(data);
-          ajaxPost();
-          // alert("Initiated");
-     });
+//           var text = document.getElementById("inputA").value;
+//           data = {
+//                "sentence": text
+//              };
+//           data2 = JSON.stringify(data);
+//           ajaxPost();
+//           // alert("Initiated");
+//      });
 
-});
+// });
 
 function ajaxPost(){
      $.ajax({

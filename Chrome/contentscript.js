@@ -37,7 +37,7 @@ if (y.length === 0 ){ // if not within the conversation page
           
           var td = document.createElement("td");
           if (i === 0){       // Check if its the first row (Header)
-               td.innerHTML = "Important?";          
+               td.innerHTML = "  ";          
                header.insertBefore(td,header.childNodes[2]);
           }
      }
@@ -185,24 +185,27 @@ function retrieveStorage(element,i,key){
      chrome.storage.sync.get(key,function(result){
           if (result[key] === undefined){
                console.log("No previous storage data!");
-               td.innerHTML = "Conversation Unprocessed";
+               td.innerHTML = "?";
                element.insertBefore(td,element.childNodes[2]);
                return;
           }
           var dict = JSON.parse(result[key]);
-          console.log("asdasdasdasdas " + dict.timestamp);
-          if (dict.timestamp < 987495360000){
-               td.innerHTML = "Requires Reprocessing";
-               element.insertBefore(td,element.childNodes[2]);
-               return;
-          }
+          // console.log("asdasdasdasdas " + dict.timestamp);
+          // if (dict.timestamp < 987495360000){
+          //      td.innerHTML = "Requires Reprocessing";
+          //      element.insertBefore(td,element.childNodes[2]);
+          //      return;
+          // }
           if (dict.val == 0){
-               td.innerHTML = "No attention required";
+               td.innerHTML = "";
+               var img = document.createElement("img");
+               img.src = chrome.runtime.getURL('exclaimHollow.png');
+               td.appendChild(img); 
                element.insertBefore(td,element.childNodes[2]);  
           } else if (dict.val == 1) {
-               td.innerHTML = "Attention required!!";
+               td.innerHTML = "";
                var img = document.createElement("img");
-               img.src = chrome.runtime.getURL('icon_128.png');
+               img.src = chrome.runtime.getURL('exclaimFilled.png');
                td.appendChild(img); 
                element.insertBefore(td,element.childNodes[2]);
           } else {

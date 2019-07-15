@@ -3,13 +3,20 @@
     background-color: yellow;
 }
 
+#messageImg {
+    /* position : relative;
+    left: 20%; */
+    display: inline;
+    margin: 10000px 5px;
+}
+
 #odd img{
     position:right;
     margin: 20px;
 }
 
 #odd {
-    background-color: lightblue;
+    /* background-color: lightblue; */
     width: 50%;
     height :50%;
 }
@@ -25,3 +32,9 @@
     width: 50%;
     height :50%;
 }
+
+#mark{
+    width: 20px;
+    text-align: center;
+}
+

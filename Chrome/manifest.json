@@ -14,7 +14,7 @@
         "persistant": false,
         "scripts": ["background.js"]
     },
-    "web_accessible_resources": ["exclaimHollow.png","exclaimFilled.png","icon_128.png"],
+    "web_accessible_resources": ["exclaimHollow.png","exclaimFilled.png","icon_128.png","questionMark.png"],
     "content_scripts": [
         {
           "css": ["styles.css"],

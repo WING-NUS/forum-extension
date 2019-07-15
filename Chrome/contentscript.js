@@ -1,25 +1,40 @@
+retrieve("test");
+
+function retrieve(key){
+     chrome.storage.sync.get(key,function(result){
+     var dict = JSON.parse(result[key]);
+     console.log("value of key is " + dict.val);
+     })
+}
+// main();
+
+var key = "isOn";
+
+chrome.storage.sync.get(key,function(result){
+     if (result[key] === undefined){
+          storeData(key,true);
+          console.log("Undefined, switched to on");
+          main();
+          return;
+        }
+        
+     var dict = JSON.parse(result[key]);
+     console.log("Switch is " + dict.val);
+     if (dict.val ===  true){
+          main();
+        }
+});
+
+function main(){
+
 const url = "https://86ke5oq1na.execute-api.ap-southeast-1.amazonaws.com/default/mySimpleFunction";
-
-// // chrome.storage.sync.clear();
-
-
-// console.log("Script injected!");
-
-// // var data2 = JSON.stringify(data);
-// // var x = document.getElementsByClassName("forum");
-// // console.log(x[0].innerHTML);
-// // console.log(x.length);
-// // console.log(x[0].childNodes[1].querySelector('a').innerHTML);    // Gets Title of Thread 0
-// // if (x[0].childNodes[1].querySelector('p') !== null){    // Gets Description of thread 0 (If it exists)
-// //   console.log(x[0].childNodes[1].querySelector('p').innerHTML);
-// // }   
 
 var y = document.getElementsByClassName('discussion_post');    //For posts in conversation page
 console.log("Number of Discussion posts detected = " + y.length); // y.length == number of posts detected
 
-// ///////////////////////////////////////////////////////
-// ///////////////////  THREAD VIEW //////////////////////
-// ///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////  THREAD VIEW //////////////////////
+///////////////////////////////////////////////////////
 
 if (y.length === 0 ){ // if not within the conversation page
      var x = document.getElementsByClassName('forum-list');
@@ -38,7 +53,7 @@ if (y.length === 0 ){ // if not within the conversation page
           var td = document.createElement("td");
           if (i === 0){       // Check if its the first row (Header)
                td.innerHTML = "  ";          
-               header.insertBefore(td,header.childNodes[2]);
+               header.insertBefore(td,header.childNodes[1]);
           }
      }
 }
@@ -48,29 +63,11 @@ if (y.length === 0 ){ // if not within the conversation page
 // ///////////////////////////////////////////////////////
 // /////////////  CONVERSATION VIEW //////////////////////
 // ///////////////////////////////////////////////////////
-// if (y.length > 0){
-          
-//      var a = document.getElementsByClassName('page-header');
-//      var threadTitle = a[0].childNodes[0].childNodes[0].innerHTML;
-//      console.log("length of a: "+ a.length);
-//      console.log(threadTitle);
-//      var random = Math.random() * 100;
-//      random = Math.floor(random);
-//      random = random%2;
-//      storeData(threadTitle,random);
-//      console.log("Random number generated: " + random);
-// }
 
 if (y.length > 0){
      var wordcount = 0;
      var latestPostTime = 0;
      for (var i = 0;i < y.length; i++ ){
-          // data = {
-          //      "sentence" : y[i].querySelector('p').innerHTML
-          // };
-          // data2 = JSON.stringify(data);
-          // ajaxPost(y[i].querySelector('p'));
-
           var postbody = y[i].getElementsByClassName('body')[0].querySelectorAll('p');
           for (var k = 0; k < postbody.length;k++){
                // console.log(posts[k].innerHTML);
@@ -93,15 +90,13 @@ if (y.length > 0){
 
      var data = [0,wordcount,0,0.2];
      var data2 = JSON.stringify(data);
-     console.log(data2);
-     console.log(latestPostTime);
      ajaxPost(x[0],latestPostTime);
      retrieve(threadTitle);
 }
 
-// ///////////////////////////////////////////////////////
-// ///////////////////  FUNCTIONS ////////////////////////
-// ///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////  FUNCTIONS ////////////////////////
+///////////////////////////////////////////////////////
 
 
 function appendMsg(element,message){
@@ -113,29 +108,23 @@ function appendMsg(element,message){
      element.appendChild(div);
 }
 
-function appendOdd(element){
+function appendMsgImg(element,message,imageURL){
      var div = document.createElement("DIV");
      div.id = "odd";
+     var img = document.createElement("img");
+     img.src = imageURL;
+     img.id = "messageImg"; 
+     div.appendChild(img);
+     var para2 = document.createElement("P");
+     para2.innerHTML = "Attention Required!";
+     div.appendChild(para2);
+     para2.style.fontSize = "large";
+     para2.style.fontStyle = "bold";
+     para2.style.color = "red";
      var para = document.createElement("P");
-     para.innerHTML = "This Post has an ODD number of words";
+     para.innerHTML = message;
      div.appendChild(para);
      element.appendChild(div);
-}
-
-function appendEven(element){
-     var div = document.createElement("DIV");
-     div.id = "even";
-     var para = document.createElement("P");
-     para.innerHTML = "This Post has an EVEN number of words";
-     div.appendChild(para);
-     element.appendChild(div);
-}
-
-function isEven(number){
-     if(number%2 === 0){
-          return true;
-     } else
-          return false;
 }
 
 function reformatDate(date){       //Reformats date(as a String) from month dd, yyyy hh:mm, removes year
@@ -152,17 +141,19 @@ function ajaxPost(element,timestamp){
           success: function(data,status){
                // var temp = JSON.stringify(data);
                // temp = JSON.parse(temp);
+               var interventionProb = Math.round((data["1"]*100))/100.0;
                console.log("Predictions probabilities for [0] " + data["0"]);
+               console.log("Predictions probabilities for [1] " + interventionProb);
+               var msg = ("Probability of intervention required: " + interventionProb + "%");
                
-               console.log("Predictions probabilities for [1] " + data["1"]);
-               var msg = "Probabilities: {0}:" + data["0"] + ", {1}:" + data["1"];
                console.log(msg);
-               appendMsg(element,msg);
                if (data["0"] > data["1"]){
                     storeData(threadTitle,0,timestamp);
-                    console.log(timestamp);
+                    console.log(timestamp);               
+                    appendMsg(element,msg);
                } else {
-                    storeData(threadTitle,1,timestamp);
+                    storeData(threadTitle,1,timestamp);               
+                    appendMsgImg(element,msg, chrome.runtime.getURL('exclaimFilled.png'));
                }
           },
           error: function (jqxhr,statusCode){
@@ -180,34 +171,47 @@ function ajaxPost(element,timestamp){
 
 function retrieveStorage(element,i,key){
      var td = document.createElement("td");
-     td.innerHTML = "I hope this works " + i;
+     td.id = "mark";
      
      chrome.storage.sync.get(key,function(result){
           if (result[key] === undefined){
                console.log("No previous storage data!");
-               td.innerHTML = "?";
-               element.insertBefore(td,element.childNodes[2]);
+               // var img = document.createElement("img");
+               // img.src = chrome.runtime.getURL('questionMark.png');
+               // td.appendChild(img);
+               var icon = document.createElement("i");
+               icon.className = "fa fa-question";
+               td.append(icon);
+               element.insertBefore(td,element.childNodes[1]);
                return;
           }
           var dict = JSON.parse(result[key]);
-          // console.log("asdasdasdasdas " + dict.timestamp);
+
           // if (dict.timestamp < 987495360000){
           //      td.innerHTML = "Requires Reprocessing";
           //      element.insertBefore(td,element.childNodes[2]);
           //      return;
           // }
+
           if (dict.val == 0){
                td.innerHTML = "";
-               var img = document.createElement("img");
-               img.src = chrome.runtime.getURL('exclaimHollow.png');
-               td.appendChild(img); 
-               element.insertBefore(td,element.childNodes[2]);  
+               // var img = document.createElement("img");
+               // img.src = chrome.runtime.getURL('exclaimHollow.png');
+               // td.appendChild(img); 
+               var icon = document.createElement("i");
+               icon.className = "fa fa-window-minimize";
+               td.append(icon);
+               element.insertBefore(td,element.childNodes[1]);  
           } else if (dict.val == 1) {
                td.innerHTML = "";
-               var img = document.createElement("img");
-               img.src = chrome.runtime.getURL('exclaimFilled.png');
-               td.appendChild(img); 
-               element.insertBefore(td,element.childNodes[2]);
+               // var img = document.createElement("img");
+               // // img.id = "mark";
+               // img.src = chrome.runtime.getURL('exclaimFilled.png');
+               // td.appendChild(img);
+               var icon = document.createElement("i");
+               icon.className = "fa fa-exclamation";
+               td.append(icon); 
+               element.insertBefore(td,element.childNodes[1]);
           } else {
                td.innerHTML = "Error! (Should not happen)";
                element.insertBefore(td,element.childNodes[2]);   
@@ -237,28 +241,11 @@ function gotMessage(message, sender, sendResponse){
      chrome.storage.sync.clear();
   }
 }
- 
-// chrome.runtime.sendMessage({
-//     total_elements: document.querySelectorAll('*').length // or whatever you want to send
-//   });
-
 
 function retrieve(key){
      chrome.storage.sync.get(key,function(result){
      var dict = JSON.parse(result[key]);
      console.log("value of key is " + dict.val);
-     console.log("Value of timestamp = " + dict.timestamp);
      })
 }
-
-// function storeUserPrefs(key,data) {
-     
-//      testPrefs = JSON.stringify({
-//          'val': data
-//      });
-//  var jsonfile = {};
-//  jsonfile[key] = testPrefs;
-//  chrome.storage.sync.set(jsonfile, function () {
-//      console.log('Saved');
-//  });
-// }
+}

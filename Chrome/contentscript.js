@@ -1,29 +1,31 @@
-retrieve("test");
+// retrieve("test");
 
-function retrieve(key){
-     chrome.storage.sync.get(key,function(result){
-     var dict = JSON.parse(result[key]);
-     console.log("value of key is " + dict.val);
-     })
-}
-// main();
+// function retrieve(key){
+//      chrome.storage.sync.get(key,function(result){
+//      var dict = JSON.parse(result[key]);
+//      console.log("value of key is " + dict.val);
+//      })
+// }
+// // main();
 
-var key = "isOn";
+// var key = "isOn";
 
-chrome.storage.sync.get(key,function(result){
-     if (result[key] === undefined){
-          storeData(key,true);
-          console.log("Undefined, switched to on");
-          main();
-          return;
-        }
+// chrome.storage.sync.get(key,function(result){
+//      if (result[key] === undefined){
+//           storeData(key,true);
+//           console.log("Undefined, switched to on");
+//           main();
+//           return;
+//         }
         
-     var dict = JSON.parse(result[key]);
-     console.log("Switch is " + dict.val);
-     if (dict.val ===  true){
-          main();
-        }
-});
+//      var dict = JSON.parse(result[key]);
+//      console.log("Switch is " + dict.val);
+//      if (dict.val ===  true){
+//           main();
+//         }
+// });
+
+main();
 
 function main(){
 
@@ -50,9 +52,26 @@ if (y.length === 0 ){ // if not within the conversation page
          
           var header = x[0].querySelector("thead").querySelector("tr");
           
+          
           var td = document.createElement("td");
           if (i === 0){       // Check if its the first row (Header)
-               td.innerHTML = "  ";          
+               console.log("aa");
+               var div = document.createElement("div");
+               div.innerHTML = "";
+               td.append(div);
+               div.className = "tip";
+               var span = document.createElement("span");
+               span.innerHTML = "An Exclamation mark will be displayed for a forum thread if intervention is recommended";
+               span.className = "tooltiptext";
+               div.appendChild(span);
+               // var div = document.createElement("DIV");
+               // div.id = "alertThread";
+               var icon = document.createElement("i");
+               icon.className = "fa fa-question-circle";
+               div.appendChild(icon);
+               
+               // span.className = "tooltiptext";
+               // div.appendChild(span);
                header.insertBefore(td,header.childNodes[1]);
           }
      }
@@ -101,29 +120,25 @@ if (y.length > 0){
 
 function appendMsg(element,message){
      var div = document.createElement("DIV");
-     div.id = "odd";
+     div.id = "noalertThread";
      var para = document.createElement("P");
      para.innerHTML = message;
      div.appendChild(para);
      element.appendChild(div);
 }
 
-function appendMsgImg(element,message,imageURL){
+function appendAlert(element,message){
      var div = document.createElement("DIV");
-     div.id = "odd";
-     var img = document.createElement("img");
-     img.src = imageURL;
-     img.id = "messageImg"; 
-     div.appendChild(img);
-     var para2 = document.createElement("P");
-     para2.innerHTML = "Attention Required!";
-     div.appendChild(para2);
-     para2.style.fontSize = "large";
-     para2.style.fontStyle = "bold";
-     para2.style.color = "red";
+     div.id = "alertThread";
+     var icon = document.createElement("i");
+     icon.className = "fa fa-exclamation";
+     icon.id = "inline";
+     div.append(icon); 
      var para = document.createElement("P");
-     para.innerHTML = message;
+     var text = " " + message;
+     para.innerHTML = text;
      div.appendChild(para);
+     
      element.appendChild(div);
 }
 
@@ -144,16 +159,20 @@ function ajaxPost(element,timestamp){
                var interventionProb = Math.round((data["1"]*100))/100.0;
                console.log("Predictions probabilities for [0] " + data["0"]);
                console.log("Predictions probabilities for [1] " + interventionProb);
+               
                var msg = ("Probability of intervention required: " + interventionProb + "%");
                
                console.log(msg);
                if (data["0"] > data["1"]){
                     storeData(threadTitle,0,timestamp);
                     console.log(timestamp);               
+                    msg = "This thread does not seem to require intervention (" + interventionProb + "%)";
                     appendMsg(element,msg);
                } else {
-                    storeData(threadTitle,1,timestamp);               
-                    appendMsgImg(element,msg, chrome.runtime.getURL('exclaimFilled.png'));
+                    storeData(threadTitle,1,timestamp);    
+                    msg = "Intervention is recommended for this thread (" + interventionProb + "%)";           
+                    // appendMsgImg(element,msg, chrome.runtime.getURL('exclaimFilled.png'));
+                    appendAlert(element,msg);
                }
           },
           error: function (jqxhr,statusCode){
@@ -194,20 +213,13 @@ function retrieveStorage(element,i,key){
           // }
 
           if (dict.val == 0){
-               td.innerHTML = "";
-               // var img = document.createElement("img");
-               // img.src = chrome.runtime.getURL('exclaimHollow.png');
-               // td.appendChild(img); 
+               td.innerHTML = ""; 
                var icon = document.createElement("i");
-               icon.className = "fa fa-window-minimize";
-               td.append(icon);
+               // icon.className = "fa fa-window-minimize";
+               // td.append(icon);
                element.insertBefore(td,element.childNodes[1]);  
           } else if (dict.val == 1) {
                td.innerHTML = "";
-               // var img = document.createElement("img");
-               // // img.id = "mark";
-               // img.src = chrome.runtime.getURL('exclaimFilled.png');
-               // td.appendChild(img);
                var icon = document.createElement("i");
                icon.className = "fa fa-exclamation";
                td.append(icon); 

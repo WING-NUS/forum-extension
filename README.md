@@ -1,9 +1,6 @@
-# Simple Chrome Extension to Invoke a AWS Lambda Function
+# Chrome Extension -- Instructor Intervention in MOOC Discussion Forums
 
-Basic chrome extension that can be manually added to your Google Chrome Browser to invoke an AWS Lambda function. An input String is taken in and then passed to the Lambda function which then returns the original message that is passed by the user.
-
-![picture](./Chrome/screenshots/pict3.png)
-Figure 1: Chrome Extension
+This Chrome Extension shows an example implementation of the predictive models which identif important threads from MOOC discussion forums (Coursemology). It prompts MOOC instructors on when to intervene in discussion forums when viewing the relevant webpage.
 
 ## Getting Started
 
@@ -15,7 +12,7 @@ This tutorial assumes you have completed the following tasks:
 
 ```
 1.  Installation and setup Google Chrome Browser
-2.  Creation of an AWS account
+2.  Gained access to a forum in Coursemology
 ```
 
 ### Installing the extension
@@ -24,19 +21,35 @@ Add the extension to the google chrome via "Load unpacked" and directing to the 
 
 The extension should be added to the browser.
 
-### Setting up a Lambda Function
+### Using the extension
 
-*1a. Creation of the lambda function*
+1. Visit the the forum page of any module on Coursemology
+   
+     On initial visit, the forum page will appear as such
+     ![picture](./Chrome/screenshots/pict3.png)
 
-Upload the Python file found in the "lamda_function" directory, with interpreter set to Python 3.6.
+2. Visit any of the threads listed on the forum pages. The probability of whether the thread requires intervention will be calculated and then displayed accordingly at the top of the webpage
+     ![picture](./Chrome/screenshots/pict3.png)
 
-Detailed instructions can be found in the [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/getting-started-create-function.html)
+3. Subsequently, returning to the main forum listings will show the updated results from processing the respective threads.
+      ![picture](./Chrome/screenshots/pict3.png)
+      
 
-*1b. Create and link an API to the function*
+## Additional Features
 
-Create and add an API Gateway to the triggers of the lambda function for the "POST" method for the function
+Opening the extension panel reveals 2 buttons
+![picture](./Chrome/screenshots/pict3.png)
 
-*1c. Editing the target url destination for the https request sent by extension*
+### Clearing Cache
+
+Clears the memory of the the extension, mainly the results of processing the different forum threads
+
+
+### Turning off the Extension
+
+Toggles the extension between on/off, depending on its current state. (Browser page is required to be refreshed to take effect)
+
+
 
 in popup.js:
 ```javascript

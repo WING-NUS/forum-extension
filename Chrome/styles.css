@@ -15,26 +15,42 @@
     margin: 20px;
 }
 
-#odd {
-    /* background-color: lightblue; */
-    width: 50%;
-    height :50%;
+#alertThread > * {
+    display: inline;
+    font-size: 0.9em;
+    color:red;
 }
 
-
-#even img{
-    position:right;
-    margin: 20px;
+#noalertThread > *{
+    font-size: 0.9em;
 }
 
-#even {
-    background-color: lightgoldenrodyellow;
-    width: 50%;
-    height :50%;
-}
+/* #inline {
+    display:inline;
+} */
 
-#mark{
-    width: 20px;
+
+.tip {
+    /* position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; */
+}
+  
+.tip .tooltiptext {
+    visibility: hidden;
+    background-color: grey;
+    width: 30%;
+    color: #fff;
     text-align: center;
+    border-radius: 6px;
+    padding: 5px 5px 5px 5px;
+  
+    position: absolute;
+    z-index: 1;
+    left: 5%;
+} 
+  
+.tip:hover .tooltiptext {
+    visibility: visible;
 }
 

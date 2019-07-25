@@ -26,21 +26,22 @@ The extension should be added to the browser.
 1. Visit the the forum page of any module on Coursemology
    
      On initial visit, the forum page will appear as such
-     ![picture](./Chrome/screenshots/pict3.png)
+     ![picture](./Chrome/screenshots/ss1.png)
 
 2. Visit any of the threads listed on the forum pages. The probability of whether the thread requires intervention will be calculated and then displayed accordingly at the top of the webpage
-     ![picture](./Chrome/screenshots/pict3.png)
+     ![picture](./Chrome/screenshots/ss2.png)
 
 3. Subsequently, returning to the main forum listings will show the updated results from processing the respective threads.
-      ![picture](./Chrome/screenshots/pict3.png)
+      ![picture](./Chrome/screenshots/ss3.png)
       
 
 ## Additional Features
 
 Opening the extension panel reveals 2 buttons
-![picture](./Chrome/screenshots/pict3.png)
 
-### Clearing Cache
+![picture](./Chrome/screenshots/ss4.png)
+
+### Clear Cache
 
 Clears the memory of the the extension, mainly the results of processing the different forum threads
 
@@ -48,11 +49,3 @@ Clears the memory of the the extension, mainly the results of processing the dif
 ### Turning off the Extension
 
 Toggles the extension between on/off, depending on its current state. (Browser page is required to be refreshed to take effect)
-
-
-
-in popup.js:
-```javascript
-const url = "https://<your-api-key>.execute-api.<region>.amazonaws.com/<deployment-stage>/<function-path>";
-```
-

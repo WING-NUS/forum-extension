@@ -46,7 +46,8 @@ if (y.length === 0 ){ // if not within the conversation page
           // console.log("Iteration: " + i);
           var x_row = x[0].querySelectorAll('tr')[i];    //Select row x
           if (i !== 0){
-               var key = x_row.childNodes[1].querySelector('a').innerHTML;
+               var key = x_row.childNodes[1].querySelector('a').getAttribute('href');
+               console.log(x_row.childNodes[1].querySelector('a').getAttribute("href"));
                retrieveStorage(x_row,i,key);
           }
          
@@ -93,12 +94,12 @@ if (y.length > 0){
                wordcount += postbody[k].innerHTML.split(" ").length;
           }
           console.log("Current word at post " + i + " is " + wordcount);
-          var timestamp = y[i].getElementsByClassName('timestamp')[0];
-          console.log(timestamp.innerHTML);
-          var time = Date.parse(reformatDate(timestamp.innerHTML));
-          if (latestPostTime < time){
-               latestPostTime = time;
-          }
+          // var timestamp = y[i].getElementsByClassName('timestamp')[0];
+          // console.log(timestamp.innerHTML);
+          // var time = Date.parse(reformatDate(timestamp.innerHTML));
+          // if (latestPostTime < time){
+          //      latestPostTime = time;
+          // }
           
      }
 
@@ -106,11 +107,18 @@ if (y.length > 0){
 
      var x = document.getElementsByClassName('page-header');
      var threadTitle = x[0].childNodes[0].childNodes[0].innerHTML;
+     
+     var pathname = window.location.pathname;
+     console.log(pathname);
+     threadTitle = pathname;
 
      var data = [0,wordcount,0,0.2];
      var data2 = JSON.stringify(data);
      ajaxPost(x[0],latestPostTime);
-     retrieve(threadTitle);
+     // retrieve(threadTitle);
+
+
+
 }
 
 ///////////////////////////////////////////////////////

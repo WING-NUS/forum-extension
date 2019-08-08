@@ -1,5 +1,7 @@
 # Chrome Extension -- Instructor Intervention in MOOC Discussion Forums
 
+*Updated as of 6 Aug 2019*
+
 This Chrome Extension shows an example implementation of the predictive models which identif important threads from MOOC discussion forums (Coursemology). It prompts MOOC instructors on when to intervene in discussion forums when viewing the relevant webpage.
 
 ## Getting Started
@@ -48,4 +50,18 @@ Clears the memory of the the extension, mainly the results of processing the dif
 
 ### Turning off the Extension
 
-Toggles the extension between on/off, depending on its current state. (Browser page is required to be refreshed to take effect)
+Toggles the extension between on/off, depending on its current state. (Browser page is required to be refreshed to take ef
+
+# Appendix
+
+## Github Repo Outline
+
+![picture](./Chrome/screenshots/ss5.png)
+
+*Repo folders (updated as of 8 Aug 2019)*
+
+
+* **Chrome**: Contains files for the Google Chrome extension
+* **Lambda**: Contains a copy of the code when an the extension makes an API call to AWS Lambda
+* **Presentations**: Contains the presentation files regarding the project
+* **README**: Documentation regarding project
